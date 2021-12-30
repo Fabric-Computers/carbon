@@ -200,6 +200,7 @@ public class LuaClosure extends LuaFunction {
 		try {
 			for (; true; ++pc) {
 				if (Thread.currentThread().isInterrupted() || globals.isInterrupted()) {
+					globals.get("collectgarbage").invoke();
 					return NONE;
 				}
 				if (globals != null && globals.debuglib != null)
