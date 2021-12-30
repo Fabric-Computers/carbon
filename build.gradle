@@ -1,8 +1,9 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
-group 'com.carbon'
+group 'net.darktree'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -13,9 +14,24 @@ dependencies {
     implementation 'org.apache.bcel:bcel:6.5.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
-
 }
 
 test {
     useJUnitPlatform()
 }
+
+// configure the maven publication
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            url = layout.buildDirectory.dir('maven')
+        }
+    }
+}
+
