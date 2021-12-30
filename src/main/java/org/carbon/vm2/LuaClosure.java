@@ -181,10 +181,6 @@ public class LuaClosure extends LuaFunction {
 	}
 	
 	protected Varargs execute( LuaValue[] stack, Varargs varargs ) {
-		if (Thread.interrupted()) {
-			return NONE;
-		}
-
 		// loop through instructions
 		int i,a,b,c,pc=0,top=0;
 		LuaValue o;
@@ -203,6 +199,9 @@ public class LuaClosure extends LuaFunction {
 		// process instructions
 		try {
 			for (; true; ++pc) {
+				if (Thread.currentThread().isInterrupted() || globals.isInterrupted()) {
+					return NONE;
+				}
 				if (globals != null && globals.debuglib != null)
 					globals.debuglib.onInstruction( pc, v, top );
 				

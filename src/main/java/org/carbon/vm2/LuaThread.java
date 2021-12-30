@@ -121,7 +121,7 @@ public class LuaThread extends LuaValue {
 	 * Create a LuaThread around a function and environment
 	 * @param func The function to execute
 	 */
-	public LuaThread(Globals globals, LuaValue func) {	
+	public LuaThread(Globals globals, LuaValue func) {
 		assert_(func != null, "function cannot be null");
 		state = new State(globals, this, func);
 		this.globals = globals;
@@ -213,8 +213,9 @@ public class LuaThread extends LuaValue {
 				globals.running = new_thread;
 				this.args = args;
 				if (this.status == STATUS_INITIAL) {
-					this.status = STATUS_RUNNING; 
-					new Thread(this, "Coroutine-"+(++coroutine_count)).start();
+					this.status = STATUS_RUNNING;
+					Thread t = new Thread(this, "Coroutine-"+(++coroutine_count));
+					t.start();
 				} else {
 					this.notify();
 				}

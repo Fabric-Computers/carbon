@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.Reader;
+import java.util.LinkedList;
 
 import org.carbon.vm2.compiler.LuaC;
 import org.carbon.vm2.lib.jse.JsePlatform;
@@ -117,6 +118,8 @@ import org.carbon.vm2.lib.ResourceFinder;
  */
 public class Globals extends LuaTable {
 
+	public boolean interrupted = false;
+
 	/** The current default input stream. */
 	public InputStream STDIN  = null;
 
@@ -187,6 +190,14 @@ public class Globals extends LuaTable {
 		} catch (Exception e) {
 			return error("load "+filename+": "+e);
 		}
+	}
+
+	public void interrupt() {
+		this.interrupted = true;
+	}
+
+	public boolean isInterrupted() {
+		return this.interrupted;
 	}
 
 	/** Convenience function to load a string value as a script.  Must be lua source.
