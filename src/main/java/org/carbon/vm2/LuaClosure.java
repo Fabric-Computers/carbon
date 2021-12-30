@@ -181,6 +181,10 @@ public class LuaClosure extends LuaFunction {
 	}
 	
 	protected Varargs execute( LuaValue[] stack, Varargs varargs ) {
+		if (Thread.interrupted()) {
+			return NONE;
+		}
+
 		// loop through instructions
 		int i,a,b,c,pc=0,top=0;
 		LuaValue o;

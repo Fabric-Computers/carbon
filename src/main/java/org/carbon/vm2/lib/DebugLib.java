@@ -417,6 +417,10 @@ public class DebugLib extends TwoArgFunction {
 	}
 
 	public void onInstruction(int pc, Varargs v, int top) {
+		if (Thread.interrupted()) {
+			return;
+		}
+
 		LuaThread.State s = globals.running.state;
 		if (s.inhook) return;
 		callstack().onInstruction(pc, v, top);

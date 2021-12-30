@@ -11,10 +11,24 @@ public class Main {
         ScriptEngineFactory factory = new LuaScriptEngineFactory();
         ScriptEngine engine = factory.getScriptEngine();
 
-        try {
-            engine.eval("print(\"Hi\")");
-        } catch (ScriptException e) {
-            e.printStackTrace();
-        }
+        Thread executor = new Thread(() -> {
+            try {
+                engine.eval("while true do print(\"hi\") end");
+            } catch (ScriptException e) {
+                e.printStackTrace();
+            }
+        });
+
+        executor.start();
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        executor.interrupt();
+                    }
+                },
+                5000
+        );
     }
 }
